@@ -14,6 +14,7 @@
     INNER JOIN usuarios us ON us.celular = t.receptor
     ORDER BY t.id desc
   SQL);
+  $conexion->close();
 ?>
 
 <!DOCTYPE html>
@@ -46,7 +47,7 @@
   
         <div class="form-group">
           <label for="archivo">Adjuntar Archivo</label>
-          <input type="file" id="archivo" name="archivo" required>
+          <input type="file" id="archivo" name="archivo" accept=".pdf,.png,.jpg,.jpeg" required>
         </div>
   
         <button type="submit" class="btn-submit">Enviar</button>

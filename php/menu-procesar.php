@@ -1,7 +1,20 @@
 <?php 
   session_start();
   if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['archivo'])) {
+    $json = ["ok" => false];
     $archivoTmp = $_FILES['archivo']['tmp_name'];
+    $tiposPermitidos = ['application/pdf', 'image/png', 'image/jpeg'];
+    // Para el máximo de 5MB, pero se tiene que configurar el php ya que por defecto máximo es de 2MB, sino sale error
+    // $maxSize = 5 * 1024 * 1024; // 5MB en bytes
+    // if ($_FILES['archivo']['size'] > $maxSize) {
+    //   $json["mensajeError"] = "Archivo demasiado grande. El tamaño máximo permitido es de 5MB";
+    //   goto ala;
+    // }
+    if (!in_array(mime_content_type($archivoTmp), $tiposPermitidos)) {
+      $json["mensajeError"] = "Formato no válido. Solo se aceptan PDF, PNG y JPG";
+      goto ala;
+    }  
+    
     $nombre = "operacion_" . bin2hex(random_bytes(16));
 
     // url o ip del servidor storage
@@ -19,15 +32,16 @@
     $rsp_valida = curl_exec($curlSesion);
     curl_close($curlSesion);
 
-    // echo "Respuesta del servidor de almacenamiento: <br>";
-    // echo $rsp_valida;
-
-    if (!$rsp_valida) exit; 
+    if (!$rsp_valida) {
+      $json["mensajeError"] = "Ocurrió un error interno en el servidor de archivos, intente más tarde";
+      goto ala;
+    };
 
     $conexion = new mysqli("db", $_SESSION['usuario'], $_SESSION['clave'], "testdb");
     $stmt = $conexion->prepare("INSERT INTO transacciones(emisor, receptor, monto, filesustento) values (?, ?, ?, ?)");
     $stmt->bind_param("ssds", $_POST["emisor"], $_POST["receptor"], $_POST["monto"], $nombre);
     $stmt->execute();
+    $stmt->close();
 
     $r_transaccion = $conexion->query(<<<SQL
       SELECT u.nombre as emisor, us.nombre as receptor, t.monto, t.fecha
@@ -39,22 +53,15 @@
     SQL);
     $conexion->close();
 
-    // este pedazo para la descarga
-    // $contenido = file_get_contents("http://storage/uploads/alchimista.PDF");
-    // if ($contenido !== false) {
-    // header("Content-Type: application/octet-stream");
-    // header("Content-Disposition: attachment; filename=\"" . basename("http://storage/uploads/alchimista.PDF") . "\"");
-    // echo $contenido;
-    // } else {
-    //   echo "Error al descargar el archivo";
-    // }
     $fila = $r_transaccion->fetch_assoc();
-    $respuesta = [];
-    $respuesta["emisor"] = $fila["emisor"];
-    $respuesta["receptor"] = $fila["receptor"];
-    $respuesta["monto"] = $fila["monto"];
-    $respuesta["fecha"] = $fila["fecha"];
-    $respuesta["filesustento"] = $nombre;
-    echo json_encode($respuesta);
+
+    $json["ok"] = true;
+    $json["emisor"] = $fila["emisor"];
+    $json["receptor"] = $fila["receptor"];
+    $json["monto"] = $fila["monto"];
+    $json["fecha"] = $fila["fecha"];
+    $json["filesustento"] = $nombre;
+    ala:
+    echo json_encode($json);
   }
 ?>

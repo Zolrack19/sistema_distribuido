@@ -15,6 +15,10 @@ form.addEventListener("submit", async (e) => {
     }
   }).then(data => {
     console.log(data)
+    if (!data.ok) {
+      alert(data.mensajeError);
+      return;
+    } 
     const nuevaFila = document.createElement("tr");
     nuevaFila.innerHTML = `
       <td>${data["emisor"]}</td>
