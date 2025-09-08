@@ -7,6 +7,9 @@
 
     $usuario = $_POST['usuario'] ?? '';
     $clave = $_POST['clave'] ?? '';
+    if ($usuario != "carlos" || $clave != "12345") {
+      $json["mensajeError"] = "Contraseña o usuario no válido"; goto ala;
+    }
 
     $conexion = getConexionDB($usuario, $clave);
     if ($conexion == null) {
