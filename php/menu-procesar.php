@@ -1,7 +1,11 @@
 <?php 
   session_start();
-  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['archivo'])) {
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $json = ["ok" => false];
+    if (!isset($_FILES['archivo']) || $_FILES['archivo']["tmp_name"] == null) {
+      $json["mensajeError"] = "Error al subir el archivo al formulario, intente de nuevo";
+      goto ala;
+    }
     $archivoTmp = $_FILES['archivo']['tmp_name'];
     $tiposPermitidos = ['application/pdf', 'image/png', 'image/jpeg'];
     // Para el máximo de 5MB, pero se tiene que configurar el php ya que por defecto máximo es de 2MB, sino sale error
@@ -13,12 +17,12 @@
     if (!in_array(mime_content_type($archivoTmp), $tiposPermitidos)) {
       $json["mensajeError"] = "Formato no válido. Solo se aceptan PDF, PNG y JPG";
       goto ala;
-    }  
+    }
     
     $nombre = "operacion_" . bin2hex(random_bytes(16));
 
     // url o ip del servidor storage
-    $url = "http://storage/upload.php";
+    $url = "http://$_SESSION[storage_ip]/upload.php";
 
     // petición POST con CURL
     $curlSesion = curl_init();
@@ -37,7 +41,7 @@
       goto ala;
     };
 
-    $conexion = new mysqli("db", $_SESSION['usuario'], $_SESSION['clave'], "testdb");
+    $conexion = new mysqli($_SESSION["db_ip"], $_SESSION['usuario'], $_SESSION['clave'], $_SESSION["db_name"]);
     $stmt = $conexion->prepare("INSERT INTO transacciones(emisor, receptor, monto, filesustento) values (?, ?, ?, ?)");
     $stmt->bind_param("ssds", $_POST["emisor"], $_POST["receptor"], $_POST["monto"], $nombre);
     $stmt->execute();
@@ -61,6 +65,7 @@
     $json["monto"] = $fila["monto"];
     $json["fecha"] = $fila["fecha"];
     $json["filesustento"] = $nombre;
+    
     ala:
     echo json_encode($json);
   }

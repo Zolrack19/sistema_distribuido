@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <title></title>
   <link rel="stylesheet" href="/css/index.css">
+  <script type="module" src="/js/index.js"></script>
 </head>
 <body>
   <div class="login-container">
     <h2>Iniciar Sesión</h2>
-    <form action="/php/login.php" method="post">
+    <form method="post" id="login-form">
       <label for="usuario">Usuario</label>
       <input type="text" id="usuario" name="usuario" placeholder="Ingresa tu usuario" required>
       

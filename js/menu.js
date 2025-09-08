@@ -1,3 +1,5 @@
+const storage_ip = "172.19.0.4";
+
 const form = document.getElementById("form-transaccion");
 const tbodyTransacciones = document.getElementById("tbody-transacciones");
 
@@ -38,7 +40,7 @@ tbodyTransacciones.addEventListener("click", (e) => {
     // para cuando sea público el servicof storage
     const linkOperacion = e.target.innerHTML;
     const temp_a = document.createElement("a");
-    temp_a.href = `http://172.19.0.4/uploads/${linkOperacion}`
+    temp_a.href = `http://${storage_ip}/uploads/${linkOperacion}`
     temp_a.download = linkOperacion;
     temp_a.target = "blank";
     document.body.appendChild(temp_a);

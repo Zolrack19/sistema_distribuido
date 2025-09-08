@@ -5,7 +5,7 @@
     header("Location: /index.php");
     exit;
   }
-  $conexion = new mysqli("db", $_SESSION['usuario'], $_SESSION['clave'], "testdb");
+  $conexion = new mysqli($_SESSION["db_ip"], $_SESSION['usuario'], $_SESSION['clave'], $_SESSION["db_name"]);
   $r_usuarios = $conexion->query("SELECT * FROM usuarios;");
   $r_transacciones = $conexion->query(<<<SQL
     SELECT u.nombre as emisor, us.nombre as receptor, t.monto, t.fecha, t.filesustento
