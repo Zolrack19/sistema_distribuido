@@ -29,7 +29,6 @@ form.addEventListener("submit", async (e) => {
       <td>${data["fecha"]}</td>
       <td><span class="link-operacion">${data["filesustento"]}</span></td>
     `;
-    // <td><span class="link-operacion">${data["filesustento"]}</span></td>
     tbodyTransacciones.insertBefore(nuevaFila, tbodyTransacciones.firstChild);
   })
 })

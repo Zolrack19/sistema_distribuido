@@ -1,5 +1,7 @@
 <?php 
   session_start();
+  require __DIR__ . "/config.php";
+
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $json = ["ok" => false];
     if (!isset($_FILES['archivo']) || $_FILES['archivo']["tmp_name"] == null) {
@@ -22,7 +24,7 @@
     $nombre = "operacion_" . bin2hex(random_bytes(16));
 
     // url o ip del servidor storage
-    $url = "http://$_SESSION[storage_ip]/upload.php";
+    $url = "http://" . STORAGE_IP . "/upload.php";
 
     // petición POST con CURL
     $curlSesion = curl_init();
@@ -41,7 +43,7 @@
       goto ala;
     };
 
-    $conexion = new mysqli($_SESSION["db_ip"], $_SESSION['usuario'], $_SESSION['clave'], $_SESSION["db_name"]);
+    $conexion = getConexionDB($_SESSION["usuario"], $_SESSION["clave"]);
     $stmt = $conexion->prepare("INSERT INTO transacciones(emisor, receptor, monto, filesustento) values (?, ?, ?, ?)");
     $stmt->bind_param("ssds", $_POST["emisor"], $_POST["receptor"], $_POST["monto"], $nombre);
     $stmt->execute();
