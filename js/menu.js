@@ -1,6 +1,7 @@
 const storage_ip = "172.19.0.4";
 
 const form = document.getElementById("form-transaccion");
+const tbodytUsuarios = document.getElementById("tbody-usuarios");
 const tbodyTransacciones = document.getElementById("tbody-transacciones");
 
 form.addEventListener("submit", async (e) => {
@@ -30,6 +31,10 @@ form.addEventListener("submit", async (e) => {
       <td><span class="link-operacion">${data["filesustento"]}</span></td>
     `;
     tbodyTransacciones.insertBefore(nuevaFila, tbodyTransacciones.firstChild);
+    const colSaldoEmisor = tbodytUsuarios.querySelector(`tr[data-id="${formData.get("emisor")}"]`).querySelector("td[data-col_name='saldo']");
+    const colSaldoReceptor = tbodytUsuarios.querySelector(`tr[data-id="${formData.get("receptor")}"]`).querySelector("td[data-col_name='saldo']");
+    colSaldoEmisor.innerHTML = data["saldoEmisor"].toFixed(2);
+    colSaldoReceptor.innerHTML = data["saldoReceptor"].toFixed(2);
   })
 })
 

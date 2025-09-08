@@ -64,14 +64,14 @@
           <th>Saldo</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="tbody-usuarios">
         <?php 
           while ($fila = $r_usuarios->fetch_assoc()) {
             echo 
             "<tr data-id=" . $fila["celular"] .">" .
-              "<td>" . $fila["celular"] . "</td>" .
-              "<td>" . $fila["nombre"] . "</td>" .
-              "<td>" . $fila["saldo"] . "</td>" .
+              "<td data-col_name='celular'>" . $fila["celular"] . "</td>" .
+              "<td data-col_name='nombre'>" . $fila["nombre"] . "</td>" .
+              "<td data-col_name='saldo'>" . $fila["saldo"] . "</td>" .
             "</tr>";
           }
         ?>
