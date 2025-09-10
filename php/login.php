@@ -11,7 +11,7 @@
       $json["mensajeError"] = "Contraseña o usuario no válido"; goto ala;
     }
 
-    $conexion = getConexionDB($usuario, $clave);
+    $conexion = getConexionDBWrapper($usuario, $clave)[0];
     if ($conexion == null) {
       $json["mensajeError"] = "No se pudo establecer conexión con el sistema, por favor intente más tarde";
       goto ala;

@@ -6,12 +6,13 @@
   define("STORAGE_IP", "storage");
   define("DB_RESPALDO_IP", "db_respaldo");
 
-  function getConexionDB($user, $clave) {
+  function getConexionDBWrapper($user, $clave) {
     $archivo = fopen(PROJECT_ROOT . "/tmp.txt", "r");
     $valor = fgets($archivo);
     fclose($archivo);
 
     $conexion = @new mysqli(DB_IP, $user, $clave, DB_NAME);
+    $db_principal = true;
     if ($conexion->connect_errno) {
       if ($valor == "1") { // falla db principal
         $archivo = fopen(PROJECT_ROOT . "/tmp.txt", "w");
@@ -19,7 +20,7 @@
         fclose($archivo);
       }
       $conexion = @new mysqli(DB_RESPALDO_IP, $user, $clave, DB_NAME);
-      
+      $db_principal = false;
     } else if ($valor == "0") { // db se recuperó, necesita sincronizar datos
       $conexion_respaldo = @new mysqli(DB_RESPALDO_IP, $user, $clave, DB_NAME);
       $conexion_respaldo->begin_transaction();
@@ -86,6 +87,6 @@
         $conexion = null;
       }
     }
-    return (!$conexion->connect_errno) ? $conexion : null;
+    return (!$conexion->connect_errno) ? [$conexion, $db_principal] : null;
   }
 ?>

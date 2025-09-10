@@ -7,7 +7,7 @@
     exit;
   }
 
-  $conexion = getConexionDB($_SESSION["usuario"], $_SESSION["clave"]);
+  $conexion = getConexionDBWrapper($_SESSION["usuario"], $_SESSION["clave"])[0];
   $r_usuarios = $conexion->query("SELECT * FROM usuarios;");
   $r_transacciones = $conexion->query(<<<SQL
     SELECT u.nombre as emisor, us.nombre as receptor, t.monto, t.fecha, t.filesustento
