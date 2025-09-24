@@ -28,6 +28,7 @@
   <script type="module" src="/js/menu.js"></script>
 </head>
 <body>
+  <a href="/html/plantilla.html">ver gráficos</a>
 
   <div class="container-inicial">
     <div class="form-container">

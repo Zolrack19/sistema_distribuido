@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tres Gráficos de Dona</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="/css/plantilla.css">
+  <script type="module" src="/js/plantilla.js"></script>
+</head>
+<body>
+  <h2>Estadísticas</h2>
+  
+  <div class="contenedor">
+    <div>
+      <h2>Servidor web de inicio</h2>
+      <div class="cont-graficos-horiz">
+        <div class="cont-dona" id="svweb-inicio-cpu">
+          <p>cpu</p>
+          <canvas></canvas>
+          <div class="data">
+            <p>N° núcleos: <span class="cores">4<span></p>
+            <p>En uso: <span class="cpu_uso">50<span> %</p>
+          </div>
+        </div>
+        <div class="cont-dona" id="svweb-inicio-ram">
+          <p>ram</p>
+          <canvas></canvas>
+          <div class="data">
+            <p>Memoria total: <span class="ram_total">16<span> GB</p>
+            <p>En uso: <span class="ram_uso">50<span> %</p>
+          </div>
+        </div>
+        <div class="container-disk" id="svweb-inicio-dis">
+        </div>
+      </div>
+    </div>
+    <div>
+      <h2>Servidor web principal</h2>
+      <div class="cont-graficos-horiz">
+        <div class="cont-dona" id="svweb-princi-cpu">
+          <p>cpu</p>
+          <canvas></canvas>
+          <div class="data">
+            <p>N° núcleos: <span class="cores">4<span></p>
+            <p>En uso: <span class="cpu_uso">50<span> %</p>
+          </div>
+        </div>
+        <div class="cont-dona" id="svweb-princi-ram">
+          <p>ram</p>
+          <canvas></canvas>
+          <div class="data">
+            <p>Memoria total: <span class="ram_total">16<span> GB</p>
+            <p>En uso: <span class="ram_uso">50<span> %</p>
+          </div>
+        </div>
+        <div class="container-disk" id="svweb-princi-dis">
+        </div>
+      </div>
+    </div>
+    <div>
+      <h2>Servidor de base de datos</h2>
+      <div class="cont-graficos-horiz">
+        <div class="cont-dona" id="svdb-cpu">
+          <p>cpu</p>
+          <canvas></canvas>
+          <div class="data">
+            <p>N° núcleos: <span class="cores">4<span></p>
+            <p>En uso: <span class="cpu_uso">50<span> %</p>
+          </div>
+        </div>
+        <div class="cont-dona" id="svdb-ram">
+          <p>ram</p>
+          <canvas></canvas>
+          <div class="data">
+            <p>Memoria total: <span class="ram_total">16<span> GB</p>
+            <p>En uso: <span class="ram_uso">50<span> %</p>
+          </div>
+        </div>
+        <div class="container-disk" id="svdb-dis">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
